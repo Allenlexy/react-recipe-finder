@@ -6,6 +6,6 @@ Leveraging the Recipe Search API from Edemam.com, the website offers access to a
 
 > - React.js Hooks (State)
 > - Asynchronous API (async/await)
-> - JSX, components, props, styled components, etc.
+> - components, props, styled components, etc.
 
 https://github.com/Allenlexy/react-recipe-finder/assets/73332153/6efbb8b2-6d38-4f3a-b8ae-16bb771168f6
