@@ -105,10 +105,11 @@ function App() {
     <Container>
       <Header>
         <AppName>
-          <AppIcon src="hamburger.svg" /> Recipe Finder
+          <AppIcon src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" />{" "}
+          Recipe Finder
         </AppName>
         <Search>
-          <SearchIcon src="search-icon.svg" />
+          <SearchIcon src="https://cdn-icons-png.flaticon.com/512/1212/1212169.png" />
           <SearchInput placeholder="Search Recipe" onChange={onTextChange} />
         </Search>
       </Header>
@@ -118,7 +119,7 @@ function App() {
             <RecipeComponent key={index} recipeObj={recipeObj.recipe} />
           ))
         ) : (
-          <Placeholder src="hamburger.svg" />
+          <Placeholder src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" />
         )}
       </RecipeListContainer>
     </Container>
