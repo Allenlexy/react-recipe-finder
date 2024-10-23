@@ -24,6 +24,7 @@ import {
 } from "./components/recipeComponent";
 import { useState } from "react";
 import axios from "axios";
+
 const APP_ID = "5dd76867";
 const APP_KEY = "54e3323605a2f44be344cee2e57e96b3";
 
@@ -40,9 +41,9 @@ const Placeholder = styled.img`
 `;
 
 const RecipeComponent = (props) => {
-  console.log("props", props);
   const [open, setOpen] = useState(false);
   const { recipeObj } = props;
+
   return (
     <>
       <Dialog open={open}>
@@ -50,16 +51,24 @@ const RecipeComponent = (props) => {
         <DialogContent>
           <table>
             <thead>
-              <th>Ingredient</th>
-              <th>Weight</th>
+              <tr>
+                <th>Ingredient</th>
+                <th>Weight</th>
+              </tr>
             </thead>
             <tbody>
-              {recipeObj.ingredients.map((ingredientObj) => (
+              {recipeObj.ingredients && recipeObj.ingredients.length > 0 ? (
+                recipeObj.ingredients.map((ingredientObj) => (
+                  <tr key={ingredientObj.text}>
+                    <td>{ingredientObj.text}</td>
+                    <td>{ingredientObj.weight}</td>
+                  </tr>
+                ))
+              ) : (
                 <tr>
-                  <td>{ingredientObj.text}</td>
-                  <td>{ingredientObj.weight}</td>
+                  <td colSpan="2">No ingredients available</td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </DialogContent>
@@ -67,11 +76,11 @@ const RecipeComponent = (props) => {
           <IngredientsText onClick={() => window.open(recipeObj.url)}>
             See More
           </IngredientsText>
-          <SeemoreText onClick={() => setOpen("")}>Close</SeemoreText>
+          <SeemoreText onClick={() => setOpen(false)}>Close</SeemoreText>
         </DialogActions>
       </Dialog>
       <RecipeContainer>
-        <CoverImg src={recipeObj.image} />
+        <CoverImg src={recipeObj.image} alt={recipeObj.label} />
         <RecipeName>{recipeObj.label}</RecipeName>
         <IngredientsText onClick={() => setOpen(true)}>
           Ingredients
@@ -89,10 +98,14 @@ function App() {
   const [recipeList, setrecipeList] = useState([]);
 
   const fetchRecipe = async (searchString) => {
-    const response = await axios.get(
-      `https:api.edamam.com/search?q=${searchString}&app_id=${APP_ID}&app_key=${APP_KEY}`
-    );
-    setrecipeList(response.data.hits);
+    try {
+      const response = await axios.get(
+        `https://api.edamam.com/search?q=${searchString}&app_id=${APP_ID}&app_key=${APP_KEY}`
+      );
+      setrecipeList(response.data.hits);
+    } catch (error) {
+      console.error("Error fetching recipe:", error);
+    }
   };
 
   const onTextChange = (event) => {
@@ -114,7 +127,7 @@ function App() {
         </Search>
       </Header>
       <RecipeListContainer>
-        {recipeList.length ? (
+        {recipeList && recipeList.length ? (
           recipeList.map((recipeObj, index) => (
             <RecipeComponent key={index} recipeObj={recipeObj.recipe} />
           ))
